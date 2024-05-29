@@ -1,0 +1,67 @@
+
+The error message ERROR: Unable to find Jenkinsfile from git https://github.com/aws-samples/eb-tomcat-snakes.git indicates that Jenkins is unable to locate the Jenkinsfile in the specified Git repository. For Jenkins to execute a pipeline, it needs to find a Jenkinsfile in the root directory of the repository, unless a different path is specified.
+
+Steps to Resolve the Issue
+Verify Jenkinsfile Exists:
+
+Ensure that a Jenkinsfile is present in the root directory of the repository https://github.com/aws-samples/eb-tomcat-snakes.git.
+If the Jenkinsfile is located in a subdirectory, specify the path to the Jenkinsfile in your pipeline configuration.
+Pipeline Script from SCM Configuration:
+
+If you are using the "Pipeline script from SCM" option in Jenkins, make sure the repository URL and branch are correctly specified.
+Ensure that the Script Path is set correctly if your Jenkinsfile is not in the root directory.
+Example of Using a Jenkinsfile in the Root Directory
+If your Jenkinsfile is in the root directory, make sure your pipeline configuration looks like this:
+
+Configure the Pipeline Job:
+Go to your Jenkins job configuration.
+Select "Pipeline" as the project type.
+In the "Pipeline" section, choose "Pipeline script from SCM".
+Select "Git" as the SCM.
+Enter the repository URL: https://github.com/aws-samples/eb-tomcat-snakes.git.
+Leave the "Script Path" as Jenkinsfile if it is in the root directory.
+Example of Using a Jenkinsfile in a Subdirectory
+If your Jenkinsfile is in a subdirectory, specify the relative path to the Jenkinsfile:
+
+Configure the Pipeline Job:
+Go to your Jenkins job configuration.
+Select "Pipeline" as the project type.
+In the "Pipeline" section, choose "Pipeline script from SCM".
+Select "Git" as the SCM.
+Enter the repository URL: https://github.com/aws-samples/eb-tomcat-snakes.git.
+Set the "Script Path" to the relative path of the Jenkinsfile, for example, subdirectory/Jenkinsfile.
+Using Pipeline Script Directly
+Alternatively, you can directly paste the pipeline script into Jenkins:
+
+Configure the Pipeline Job:
+Go to your Jenkins job configuration.
+Select "Pipeline" as the project type.
+In the "Pipeline" section, choose "Pipeline script".
+Paste your pipeline script into the provided text area.
+Here’s the corrected pipeline script for direct input:
+
+groovy
+Copy code
+pipeline {
+    agent any
+    environment {
+        PATH = "/opt/maven/bin:$PATH"
+    }
+    stages {
+        stage('print') {
+            steps {
+                echo "Hello World"
+            }
+        }
+        stage('clone') {
+            steps {
+                git 'https://github.com/aws-samples/eb-tomcat-snakes.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh "mvn clean install"
+            }
+        }
+    }
+}
