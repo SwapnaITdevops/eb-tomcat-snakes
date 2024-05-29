@@ -1,0 +1,23 @@
+pipeline {
+    agent any
+    environment {
+        PATH = "/opt/maven/bin:$PATH"
+    }
+    stages {
+        stage('print') {
+            steps {
+                echo "Hello World"
+            }
+        }
+        stage('clone') {
+            steps {
+                git 'https://github.com/aws-samples/eb-tomcat-snakes.git'
+            }
+        }
+        stage('build') {
+            steps {
+                sh "mvn clean install"
+            }
+        }
+    }
+}
